@@ -1,3 +1,5 @@
+ //* 13. Verify the title of the page
+//I got the the title , how to verify the title.
 package week4.day1;
 /*
  * //Pseudo Code
@@ -34,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -59,24 +62,33 @@ public class MergeContactUsingAlertAssignment {
 	driver.findElement(By.xpath("//a[text()='Merge Contacts']")).click();
 	//7. Click on Widget of From Contact
 	driver.findElement(By.xpath("(//input[@id='partyIdFrom']/following::a)[1]")).click();
-	Set<String> windowHandles = driver.getWindowHandles();
-	List<String> childWindow=new ArrayList<String>(windowHandles);
-	driver.switchTo().window(childWindow.get(1));
+	Set<String> windowHandles1 = driver.getWindowHandles();
+	List<String> childWindow1=new ArrayList<String>(windowHandles1);
+	driver.switchTo().window(childWindow1.get(1));
 	//* 8. Click on First Resulting Contact
 	driver.findElement(By.xpath("//a[@class='linktext']")).click();
-	driver.close();
-	 
+	driver.switchTo().window(childWindow1.get(0));
 	// * 9. Click on Widget of To Contact
-	driver.findElement(By.xpath("//input[@id='partyIdTo']/following::a")).click();
+	driver.findElement(By.xpath("(//input[@id='partyIdTo']/following::a)[1]")).click();
+	//Trying to close the current window
 	
+	//driver.findElement(By.xpath("(//input[@id='partyIdFrom']/following::a)[1]")).click();
+	Set<String> windowHandles2= driver.getWindowHandles();
+	List<String> childWindow2=new ArrayList<String>(windowHandles2);
+	driver.switchTo().window(childWindow2.get(1));
 	// * 10. Click on Second Resulting Contact
-	
-	 
+	driver.findElement(By.xpath("(//div[@class='x-grid3-cell-inner x-grid3-col-partyId']/a)[2]")).click();
+	driver.switchTo().window(childWindow2.get(0));
 	// * 11. Click on Merge button using Xpath Locator
-	 
+	driver.findElement(By.xpath("//a[@class='buttonDangerous']")).click(); 
 	// * 12. Accept the Alert
-	 
+	Alert alert = driver.switchTo().alert();
+	String text = alert.getText();
+	System.out.println("Alert Message is : "+text);
+	alert.accept();
 	 //* 13. Verify the title of the page
-
+	String title = driver.getTitle();
+	System.out.println("Title of the page : "+title);
+	
 }
 }
